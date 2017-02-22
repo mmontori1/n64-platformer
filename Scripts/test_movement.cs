@@ -43,8 +43,12 @@ public class test_movement : MonoBehaviour {
 //		distPosZ = Mathf.Lerp(curLocZ, changeZ, 3 * Time.deltaTime) * Mathf.Abs(Input.GetAxis("Vertical"));
 //		distPosX = Mathf.Sin((Mathf.PI / 2) * Input.GetAxisRaw("Horizontal")) * Mathf.Abs(Input.GetAxis("Horizontal"));
 //		distPosZ = Mathf.Sin((Mathf.PI / 2) * Input.GetAxisRaw("Vertical")) * Mathf.Abs(Input.GetAxis("Vertical"));
-		distPosX = Input.GetAxisRaw("Horizontal");
-		distPosZ = Input.GetAxisRaw("Vertical");
+//		distPosX = Mathf.Cos(Input.GetAxis("Vertical")) * Mathf.Sin(Input.GetAxis("Horizontal"));
+//		distPosZ = Mathf.Sin(Input.GetAxis("Vertical")) * Mathf.Cos(Input.GetAxis("Horizontal"));
+		distPosX = Input.GetAxis("Horizontal") / Mathf.Sqrt(1 + Mathf.Abs(Input.GetAxis("Vertical")));
+		distPosZ = Input.GetAxis("Vertical") / Mathf.Sqrt(1 + Mathf.Abs(Input.GetAxis("Horizontal")));
+//		distPosX = Mathf.Atan(Input.GetAxis("Horizontal"));
+//		distPosZ = Mathf.Atan(Input.GetAxis("Vertical"));
 		follow.transform.localPosition = new Vector3 (distPosX, 0, distPosZ);
 //		if(Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Horizontal") != 0){
 //			//			follow.transform.position = new Vector3(5 * Mathf.Sin(Mathf.PI * Input.GetAxis("Horizontal")), 
@@ -66,16 +70,17 @@ public class test_movement : MonoBehaviour {
 //		else{
 //			follow.transform.localPosition = new Vector3 (0, 0, 0);
 //		}
+
 		Vector3 difference = follow.transform.position - player.transform.position;
 //		Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * speed * difference.x, 
 //			rb.velocity.y, Input.GetAxis("Vertical") * speed * difference.z);
 		Vector3 direction = new Vector3(speed * difference.x, rb.velocity.y, speed * difference.z);
-		if(Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0){
+//		if(Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0){
 			rb.velocity = direction;
-		}
-		else{
-			rb.velocity = Vector3.Slerp (rb.velocity, new Vector3(0, rb.velocity.y, 0), 1);
-		}
+//		}
+//		else{
+//			rb.velocity = Vector3.Slerp (rb.velocity, new Vector3(0, rb.velocity.y, 0), 1);
+//		}
 		if(Input.GetKeyDown(KeyCode.Space)){
 			rb.AddForce(0, 30, 0, ForceMode.Impulse);
 		}
