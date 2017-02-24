@@ -9,12 +9,14 @@ public class test_movement : MonoBehaviour {
 	public GameObject cannon;
 	private Rigidbody rb;
 	private float speed;
-	private bool grounded;
+	public int fuel;
+	public bool grounded;
 	private Vector2 angleOrigin;
 
 	// Use this for initialization
 	void Start () {
 		angleOrigin = new Vector2(1, 0);
+		fuel = 7;
 		grounded = true;
 		rb = GetComponent<Rigidbody>();
 	}
@@ -22,7 +24,7 @@ public class test_movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//shifts speed depending on whether left shift is pressed or not
-		speed = Input.GetKey(KeyCode.LeftShift) ? 15 : 10;
+		speed = Input.GetKey(KeyCode.LeftShift) ? 7.5f : 5;
 			
 		// calculates where the follow object should be
 		if(Input.GetAxisRaw ("Horizontal") != 0 || Input.GetAxisRaw ("Vertical") != 0){
@@ -57,12 +59,40 @@ public class test_movement : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space) && grounded){
 			rb.AddForce(0, 30, 0, ForceMode.Impulse);
 		}
+
+		if(Input.GetKey(KeyCode.Space) && !grounded && rb.velocity.y < 0){
+			rb.drag = 10;
+		}
+			
+		//R => rocket thrusters
+		if(Input.GetKey(KeyCode.R) && fuel > 0 && !grounded /*&& rb.velocity.y < 0*/){
+			rb.AddForce(0, 2.2f, 0, ForceMode.Impulse);
+			StartCoroutine(rocketThrusters());
+		}
+	}
+
+	private IEnumerator rocketThrusters(){
+		yield return new WaitForSeconds(0.7f);
+		if(fuel > 0){
+			fuel -= 1;
+		}
+	}
+
+	private IEnumerator refuel(){
+//		print("WAIT: REFUELING");
+		yield return new WaitForSeconds(3f);
+		print("REFUELED");
+		fuel = 7;
 	}
 
 	//ground check for jumping
 	void OnCollisionEnter(Collision coll){
 		if(coll.gameObject.tag == "ground"){
 			grounded = true;
+			rb.drag = 0;
+			if(fuel <= 0){
+				StartCoroutine(refuel());
+			}
 		}
 	}
 
