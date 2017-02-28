@@ -24,7 +24,7 @@ public class test_movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//shifts speed depending on whether left shift is pressed or not
-		speed = Input.GetKey(KeyCode.LeftShift) ? 3.5f : 2f;
+		speed = Input.GetKey(KeyCode.LeftShift) ? 3.5f : 2.5f;
 			
 		// calculates where the follow object should be
 		if(Input.GetAxisRaw ("Horizontal") != 0 || Input.GetAxisRaw ("Vertical") != 0){
@@ -65,8 +65,8 @@ public class test_movement : MonoBehaviour {
 		}
 			
 		//R => rocket thrusters
-		if(Input.GetKey(KeyCode.R) && fuel > 0 && grounded == 0 /*&& rb.velocity.y < 0*/){
-			rb.AddForce(0, 2.2f, 0, ForceMode.Impulse);
+		if(Input.GetKey(KeyCode.R) && fuel > 0 && grounded == 0 && rb.velocity.y < 0){
+			rb.AddForce(0, 5f, 0, ForceMode.Impulse);
 			StartCoroutine(rocketThrusters());
 		}
 	}
@@ -79,7 +79,6 @@ public class test_movement : MonoBehaviour {
 	}
 
 	private IEnumerator refuel(){
-//		print("WAIT: REFUELING");
 		yield return new WaitForSeconds(3f);
 		print("REFUELED");
 		fuel = 7;
@@ -95,6 +94,7 @@ public class test_movement : MonoBehaviour {
 			}
 		}
 		if(coll.gameObject.tag == "bouncer"){
+			rb.drag = 0;
 			rb.AddForce(0, 30f, 0, ForceMode.Impulse);
 		}
 	}
