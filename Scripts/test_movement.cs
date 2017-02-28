@@ -10,21 +10,21 @@ public class test_movement : MonoBehaviour {
 	private Rigidbody rb;
 	private float speed;
 	public int fuel;
-	public bool grounded;
+	public int grounded;
 	private Vector2 angleOrigin;
 
 	// Use this for initialization
 	void Start () {
 		angleOrigin = new Vector2(1, 0);
 		fuel = 7;
-		grounded = true;
+		grounded = 0;
 		rb = GetComponent<Rigidbody>();
 	}
 
 	// Update is called once per frame
 	void Update () {
 		//shifts speed depending on whether left shift is pressed or not
-		speed = Input.GetKey(KeyCode.LeftShift) ? 7.5f : 5;
+		speed = Input.GetKey(KeyCode.LeftShift) ? 5f : 3.5f;
 			
 		// calculates where the follow object should be
 		if(Input.GetAxisRaw ("Horizontal") != 0 || Input.GetAxisRaw ("Vertical") != 0){
@@ -56,16 +56,16 @@ public class test_movement : MonoBehaviour {
 		}
 
 		// space => jump
-		if(Input.GetKeyDown(KeyCode.Space) && grounded){
+		if(Input.GetKeyDown(KeyCode.Space) && grounded != 0){
 			rb.AddForce(0, 30, 0, ForceMode.Impulse);
 		}
 
-		if(Input.GetKey(KeyCode.Space) && !grounded && rb.velocity.y < 0){
+		if(Input.GetKey(KeyCode.Space) && grounded == 0 && rb.velocity.y < 0){
 			rb.drag = 10;
 		}
 			
 		//R => rocket thrusters
-		if(Input.GetKey(KeyCode.R) && fuel > 0 && !grounded /*&& rb.velocity.y < 0*/){
+		if(Input.GetKey(KeyCode.R) && fuel > 0 && grounded == 0 /*&& rb.velocity.y < 0*/){
 			rb.AddForce(0, 2.2f, 0, ForceMode.Impulse);
 			StartCoroutine(rocketThrusters());
 		}
@@ -88,7 +88,7 @@ public class test_movement : MonoBehaviour {
 	//ground check for jumping
 	void OnCollisionEnter(Collision coll){
 		if(coll.gameObject.tag == "ground"){
-			grounded = true;
+			grounded += 1;
 			rb.drag = 0;
 			if(fuel <= 0){
 				StartCoroutine(refuel());
@@ -98,7 +98,7 @@ public class test_movement : MonoBehaviour {
 
 	void OnCollisionExit(Collision coll){
 		if(coll.gameObject.tag == "ground"){
-			grounded = false;
+			grounded -= 1;
 		}
 	}
 }

@@ -12,6 +12,7 @@ public class CamaraFollow : MonoBehaviour {
 		mainCamera = GetComponent<Camera>();
 		mainCamera.transform.position = player.transform.position - offset;
 		mainCamera.transform.LookAt(player.transform);
+		mainCamera.transform.position = mainCamera.transform.position + new Vector3 (0, 2, -2);
 	}
 	
 	// Update is called once per frame
