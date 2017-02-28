@@ -95,7 +95,6 @@ public class test_movement : MonoBehaviour {
 			}
 		}
 		if(coll.gameObject.tag == "bouncer"){
-			print ("wat");
 			rb.AddForce(0, 30f, 0, ForceMode.Impulse);
 		}
 	}
