@@ -24,7 +24,7 @@ public class test_movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//shifts speed depending on whether left shift is pressed or not
-		speed = Input.GetKey(KeyCode.LeftShift) ? 5f : 3.5f;
+		speed = Input.GetKey(KeyCode.LeftShift) ? 3.5f : 2f;
 			
 		// calculates where the follow object should be
 		if(Input.GetAxisRaw ("Horizontal") != 0 || Input.GetAxisRaw ("Vertical") != 0){
@@ -57,7 +57,7 @@ public class test_movement : MonoBehaviour {
 
 		// space => jump
 		if(Input.GetKeyDown(KeyCode.Space) && grounded != 0){
-			rb.AddForce(0, 30, 0, ForceMode.Impulse);
+			rb.AddForce(0, 17.5f, 0, ForceMode.Impulse);
 		}
 
 		if(Input.GetKey(KeyCode.Space) && grounded == 0 && rb.velocity.y < 0){
@@ -93,6 +93,10 @@ public class test_movement : MonoBehaviour {
 			if(fuel <= 0){
 				StartCoroutine(refuel());
 			}
+		}
+		if(coll.gameObject.tag == "bouncer"){
+			print ("wat");
+			rb.AddForce(0, 30f, 0, ForceMode.Impulse);
 		}
 	}
 
