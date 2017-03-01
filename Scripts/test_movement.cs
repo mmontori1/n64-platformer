@@ -86,21 +86,21 @@ public class test_movement : MonoBehaviour {
 
 	//ground check for jumping
 	void OnCollisionEnter(Collision coll){
-		if(coll.gameObject.tag == "ground"){
+		if(coll.gameObject.CompareTag("ground")){
 			grounded += 1;
 			rb.drag = 0;
 			if(fuel <= 0){
 				StartCoroutine(refuel());
 			}
 		}
-		if(coll.gameObject.tag == "bouncer"){
+		if(coll.gameObject.CompareTag("bouncer")){
 			rb.drag = 0;
 			rb.AddForce(0, 30f, 0, ForceMode.Impulse);
 		}
 	}
 
 	void OnCollisionExit(Collision coll){
-		if(coll.gameObject.tag == "ground"){
+		if(coll.gameObject.CompareTag("ground")){
 			grounded -= 1;
 		}
 	}

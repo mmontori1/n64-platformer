@@ -26,9 +26,9 @@ public class Enemy : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision coll){
-		if(coll.gameObject.tag == "bouncer"){
+		if(coll.gameObject.CompareTag("bouncer")){
 			print ("WOW");
-			agent.Stop(true);
+			agent.Stop();
 			rb.AddRelativeForce(0, 30f, 0, ForceMode.Impulse);
 			agent.Resume();
 		}
