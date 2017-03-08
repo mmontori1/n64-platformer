@@ -27,4 +27,9 @@ public class bouncer : MonoBehaviour {
 			contact = false;
 		}
 	}
+
+	private IEnumerator isJumping(){
+		yield return new WaitForSeconds(.7f);
+		contact = false;
+	}
 }

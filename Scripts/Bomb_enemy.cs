@@ -19,10 +19,10 @@ public class Bomb_enemy : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void FixedUpdate(){
-		if(platform.contact){
-			print (player.transform.position);
-			agent.SetDestination(player.transform.position);
+	void Update(){
+		if(platform.contact && (Mathf.Abs(this.transform.position.y - player.transform.position.y) < .5)){
+			agent.SetDestination(new Vector3(player.transform.position.x, 
+				this.transform.position.y, player.transform.position.z));
 		}
 		else{
 			agent.SetDestination(origin);
@@ -31,6 +31,7 @@ public class Bomb_enemy : MonoBehaviour {
 
 	void OnCollisionEnter(Collision coll){
 		if(coll.gameObject.CompareTag("Player")){
+			Destroy (this.gameObject);
 		}
 	}
 }
